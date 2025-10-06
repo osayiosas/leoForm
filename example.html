@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>leoForm - Example</title>
+  <link rel="stylesheet" href="leoForm.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #f5f5f5;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-top: 0;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>leoForm Example</h1>
+    <p class="subtitle">A simple, flexible form validation library</p>
+
+    <form id="myForm" class="leo-form">
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="form-group">
+        <label for="website">Website</label>
+        <input type="url" id="website" name="website" placeholder="https://example.com">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="4" placeholder="Enter your message"></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="form-submit">Submit</button>
+        <button type="button" class="form-reset" onclick="myFormInstance.reset()">Reset</button>
+      </div>
+    </form>
+
+    <div id="result" style="margin-top: 20px;"></div>
+  </div>
+
+  <script src="leoForm.js"></script>
+  <script>
+    // Initialize the form
+    const myFormInstance = new LeoForm('#myForm', {
+      validateOnBlur: true,
+      validateOnInput: false,
+      showErrors: true
+    });
+
+    // Add validators
+    myFormInstance.addValidator('name', LeoForm.validators.required, 'Name is required');
+    myFormInstance.addValidator('name', LeoForm.validators.minLength(2), 'Name must be at least 2 characters');
+
+    myFormInstance.addValidator('email', LeoForm.validators.required, 'Email is required');
+    myFormInstance.addValidator('email', LeoForm.validators.email, 'Please enter a valid email address');
+
+    myFormInstance.addValidator('website', (value) => {
+      if (value === '') return true; // Optional field
+      return LeoForm.validators.url(value);
+    }, 'Please enter a valid URL');
+
+    myFormInstance.addValidator('message', LeoForm.validators.required, 'Message is required');
+    myFormInstance.addValidator('message', LeoForm.validators.minLength(10), 'Message must be at least 10 characters');
+
+    // Handle successful submission
+    myFormInstance.onSuccess = function(data) {
+      console.log('Form submitted with data:', data);
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <div class="form-success-message">
+          <strong>Success!</strong> Form submitted successfully.
+          <pre style="margin-top: 10px; font-size: 12px;">${JSON.stringify(data, null, 2)}</pre>
+        </div>
+      `;
+    };
+
+    // Handle validation errors
+    myFormInstance.onError = function(errors) {
+      console.log('Validation errors:', errors);
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <div class="form-error-message">
+          <strong>Error!</strong> Please fix the validation errors above.
+        </div>
+      `;
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "leoform",
+  "version": "1.0.0",
+  "description": "A simple, flexible form validation library",
+  "main": "leoForm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "form-validation",
+    "javascript",
+    "html",
+    "frontend"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osayiosas/leoForm.git"
+  }
+}
